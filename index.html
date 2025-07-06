@@ -14,7 +14,7 @@
     />
 
     <style>
-      /* --- RMIT Vietnam Theme & Global Styles --- */
+      /* --- RMIT Vietnam Theme & Global Styles (UPDATED) --- */
       :root {
         --rmit-red: #e50004;
         --rmit-black: #000000;
@@ -41,20 +41,372 @@
         flex-direction: column;
       }
 
-      /* All your other CSS goes here... it is unchanged */
-      header,
-      .container,
-      .btn,
-      .carousel,
-      .modal-close-btn,
-      etc... {
-        /* ... all the styles are the same ... */
+      /* --- Header & Navigation --- */
+      header {
+        background-color: var(--rmit-black);
+        color: var(--rmit-white);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 4px solid var(--rmit-red);
+        flex-shrink: 0;
+        z-index: 1000;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+
+      header h1 a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      header nav button {
+        background: none;
+        border: 1px solid var(--rmit-white);
+        color: var(--rmit-white);
+        padding: 0.5rem 1rem;
+        margin-left: 1rem;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      header nav button:hover,
+      header nav button.active {
+        background-color: var(--rmit-red);
+        border-color: var(--rmit-red);
+      }
+
+      /* --- Main Content & Layout --- */
+      main {
+        padding: 2rem 0;
+        box-sizing: border-box;
+        flex-grow: 1;
+        display: none; /* Toggled by JS */
+        flex-direction: column;
+        justify-content: center;
+        overflow-y: auto;
+      }
+
+      .content-wrapper {
+        width: 100%;
+        max-width: 1440px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .container {
+        background-color: var(--rmit-white);
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .two-column-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+
+      /* --- Form Elements --- */
+      .form-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      h2 {
+        margin-top: 0;
+        border-bottom: 2px solid var(--light-grey);
+        padding-bottom: 0.5rem;
+      }
+
+      label {
+        font-weight: bold;
+        margin-bottom: -1rem;
+      }
+
+      input[type="text"],
+      input[type="file"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--medium-grey);
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+
+      input[type="text"]:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--rmit-red);
+        box-shadow: 0 0 0 2px rgba(229, 0, 4, 0.2);
+      }
+
+      textarea#observerNotes {
+        height: 100%;
+        min-height: 200px;
+        resize: vertical;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+      }
+
+      .btn-primary {
+        background-color: var(--rmit-red);
+        color: var(--rmit-white);
+      }
+      .btn-primary:hover {
+        background-color: #c40021;
+      }
+
+      .btn-secondary {
+        background-color: var(--dark-grey);
+        color: var(--rmit-white);
+      }
+      .btn-secondary:hover {
+        background-color: #555;
+      }
+      .btn:disabled {
+        background-color: var(--medium-grey);
+        cursor: not-allowed;
+      }
+
+      /* --- Mode 2: Match & Map Specifics --- */
+      #disclaimer-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.95);
+        color: var(--rmit-white);
+        display: none; /* Controlled by JS */
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        text-align: center;
+      }
+
+      #disclaimer-content {
+        max-width: 600px;
+        padding: 2rem;
+      }
+      #disclaimer-content h2 {
+        color: var(--rmit-red);
+        border: none;
+      }
+      #map {
+        height: 500px;
+        width: 100%;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--medium-grey);
+      }
+
+      .carousel-container h2 {
+        text-align: center;
+        margin: 0 auto 1rem auto;
+      }
+
+      @keyframes scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      .carousel {
+        overflow: hidden;
+        position: relative;
+        cursor: grab;
+        border-radius: var(--border-radius);
+        background: var(--rmit-white);
+        padding: 1rem 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        user-select: none;
+      }
+
+      .carousel:active {
+        cursor: grabbing;
+      }
+
+      .carousel-track {
+        display: flex;
+        width: calc(182px * 16);
+        animation: scroll 60s linear infinite;
+      }
+
+      .carousel:hover .carousel-track {
+        animation-play-state: paused;
+      }
+
+      .carousel-item {
+        flex: 0 0 150px;
+        margin: 0 16px;
+      }
+
+      .carousel-item a {
+        display: block;
+        padding: 1rem;
+        border: 1px solid var(--medium-grey);
+        border-radius: var(--border-radius);
+        transition: box-shadow 0.3s;
+      }
+
+      .carousel-item a:hover {
+        box-shadow: 0 0 8px rgba(229, 0, 4, 0.5);
+      }
+      .carousel-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      /* --- MODAL STYLES (DISCLAIMER AND ABOUT) --- */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      /* --- NEW: About Modal Styles --- */
+      #about-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: var(--dark-grey);
+        display: none; /* Controlled by JS */
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+      }
+
+      #about-content {
+        background-color: var(--rmit-white);
+        max-width: 700px;
+        max-height: 85vh; /* Allow for scrolling on small screens */
+        overflow-y: auto; /* Enable scrolling for long content */
+        padding: 2rem 3rem;
+        border-radius: var(--border-radius);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        position: relative;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      #about-content h2 {
+        color: var(--rmit-red);
+        border: none;
+        margin-top: 0;
+        text-align: center;
+      }
+
+      #about-content h3 {
+        margin-top: 1.5rem;
+        color: var(--rmit-black);
+        border-bottom: 1px solid var(--medium-grey);
+        padding-bottom: 0.5rem;
+      }
+
+      #about-content p,
+      #about-content li {
+        line-height: 1.6;
+      }
+
+      #about-content ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+
+      #about-content li {
+        margin-bottom: 0.5rem;
+        padding-left: 1.2em;
+        position: relative;
+      }
+
+      #about-content li::before {
+        content: "-";
+        position: absolute;
+        left: 0;
+        font-weight: bold;
+      }
+
+      .modal-close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--medium-grey);
+        cursor: pointer;
+        line-height: 1;
+        transition: color 0.2s;
+      }
+
+      .modal-close-btn:hover {
+        color: var(--rmit-red);
+      }
+
+      /* Responsive Grid */
+      @media (max-width: 768px) {
+        .content-wrapper {
+          width: 95vw;
+          gap: 1rem;
+        }
+
+        .two-column-grid {
+          grid-template-columns: 1fr;
+        }
+        header {
+          position: static;
+          flex-direction: column;
+          gap: 1rem;
+        }
+        main {
+          padding: 1rem 0;
+          justify-content: flex-start;
+        }
+        .container {
+          padding: 1.5rem 1rem;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- ALL YOUR HTML BODY CONTENT GOES HERE -->
-    <!-- It is unchanged from before -->
     <header>
       <h1><a href="index.html">Sharing for Sharing</a></h1>
       <nav>
@@ -65,19 +417,348 @@
     </header>
 
     <main id="record-mode">
-      <!-- The form HTML is unchanged -->
+      <div class="content-wrapper">
+        <div class="container">
+          <form id="up-form">
+            <div class="two-column-grid">
+              <div class="form-section">
+                <h2>Record UP Information</h2>
+                <div>
+                  <label for="upName">Name (or identifier)</label>
+                  <input
+                    type="text"
+                    id="upName"
+                    name="upName"
+                    placeholder="e.g., 'Aunty with flowers'"
+                    required
+                  />
+                </div>
+                <div>
+                  <label for="upLocation">Primary Location (where found)</label>
+                  <input
+                    type="text"
+                    id="upLocation"
+                    name="upLocation"
+                    placeholder="e.g., 'Corner of Nguyen Hue and Le Loi, D1'"
+                    required
+                  />
+                </div>
+                <div>
+                  <label for="upTimeSeen">Time Seen</label>
+                  <input
+                    type="text"
+                    id="upTimeSeen"
+                    name="upTimeSeen"
+                    placeholder="e.g., 'Afternoons, around 3 PM'"
+                  />
+                </div>
+                <div>
+                  <label for="upAppearance"
+                    >Appearance & Current Activity</label
+                  >
+                  <input
+                    type="text"
+                    id="upAppearance"
+                    name="upAppearance"
+                    placeholder="e.g., 'Elderly woman, selling lottery tickets'"
+                    required
+                  />
+                </div>
+                <div>
+                  <label for="upImage">Image Upload (will be resized)</label>
+                  <input
+                    type="file"
+                    id="upImage"
+                    name="upImage"
+                    accept="image/*"
+                  />
+                </div>
+              </div>
+              <div class="form-section">
+                <h2>Observer's Notes</h2>
+                <textarea
+                  id="observerNotes"
+                  name="observerNotes"
+                  placeholder="Detailed observations. Mention any other places they frequent. The AI will scan this for location keywords."
+                ></textarea>
+              </div>
+            </div>
+            <div class="action-buttons">
+              <button type="submit" class="btn btn-primary">Save Record</button>
+              <button type="button" id="enrich-btn" class="btn btn-secondary">
+                Enrich Notes with AI
+              </button>
+            </div>
+          </form>
+          <p style="margin-top: 1rem">
+            <strong>Storage:</strong> Submissions are saved to a secure cloud
+            database.
+          </p>
+        </div>
+      </div>
     </main>
 
     <main id="match-mode">
-      <!-- The map and carousel HTML is unchanged -->
+      <div class="content-wrapper">
+        <div class="container">
+          <div class="two-column-grid">
+            <form id="donor-form" class="form-section">
+              <h2>Find a Match</h2>
+              <div>
+                <label for="donationArea"
+                  >Desired Donation Area (Location Keyword)</label
+                >
+                <input
+                  type="text"
+                  id="donationArea"
+                  placeholder="e.g., 'Nguyen Hue', 'Quận 1', 'Binh Thanh'"
+                />
+              </div>
+              <div>
+                <label for="donationType">Type of Donation</label>
+                <select id="donationType">
+                  <option value="any">Any</option>
+                  <option value="money">Money</option>
+                  <option value="clothes">Clothes</option>
+                  <option value="food">Food</option>
+                </select>
+              </div>
+              <div>
+                <label for="donationTime">Preferred Time</label>
+                <input
+                  type="text"
+                  id="donationTime"
+                  placeholder="e.g., 'Weekends' or 'Weekday evenings'"
+                />
+              </div>
+              <div class="action-buttons">
+                <button type="submit" class="btn btn-primary">
+                  Filter Map Results
+                </button>
+              </div>
+            </form>
+            <div>
+              <h2>Map View (Live)</h2>
+              <div id="map"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-container">
+          <h2>Supporting Organizers</h2>
+          <div class="carousel">
+            <div class="carousel-track">
+              <!-- Items -->
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/E50004/white?text=Org+1"
+                    alt="Organizer 1"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/000000/white?text=Org+2"
+                    alt="Organizer 2"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/E50004/white?text=Org+3"
+                    alt="Organizer 3"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/000000/white?text=Org+4"
+                    alt="Organizer 4"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/E50004/white?text=Org+5"
+                    alt="Organizer 5"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/000000/white?text=Org+6"
+                    alt="Organizer 6"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/E50004/white?text=Org+7"
+                    alt="Organizer 7"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/000000/white?text=Org+8"
+                    alt="Organizer 8"
+                /></a>
+              </div>
+              <!-- Duplicates for seamless scroll -->
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/E50004/white?text=Org+1"
+                    alt="Organizer 1"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/000000/white?text=Org+2"
+                    alt="Organizer 2"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/E50004/white?text=Org+3"
+                    alt="Organizer 3"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/000000/white?text=Org+4"
+                    alt="Organizer 4"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/E50004/white?text=Org+5"
+                    alt="Organizer 5"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/000000/white?text=Org+6"
+                    alt="Organizer 6"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/E50004/white?text=Org+7"
+                    alt="Organizer 7"
+                /></a>
+              </div>
+              <div class="carousel-item">
+                <a href="#" target="_blank"
+                  ><img
+                    src="https://placehold.co/120x80/000000/white?text=Org+8"
+                    alt="Organizer 8"
+                /></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <div id="disclaimer-overlay">
-      <!-- The disclaimer modal is unchanged -->
+      <div id="disclaimer-content">
+        <h2>Disclaimer & Ethical Use</h2>
+        <p>
+          This tool is for coordinating aid, not for surveillance. The
+          information displayed is based on volunteer submissions and should be
+          treated with respect and privacy. Always approach individuals with
+          kindness and ask for consent before providing assistance.
+        </p>
+        <button id="disclaimer-ok-btn" class="btn btn-primary">OK</button>
+      </div>
     </div>
 
     <div id="about-overlay">
-      <!-- The about modal is unchanged -->
+      <div id="about-content">
+        <button id="about-close-btn" class="modal-close-btn">×</button>
+        <h2>Welcome to the Unprivileged Support Platform</h2>
+        <p>
+          This platform was created to give everyone the chance to help those
+          who are facing hardship—whether they are living in poverty, struggling
+          with daily essentials, or simply going through a difficult season of
+          life.
+        </p>
+        <p>
+          We believe every person deserves kindness, dignity, and opportunity.
+          But too often, helping someone in need comes with barriers—lengthy
+          forms, organizational red tape, or having to go through middlemen.
+        </p>
+        <p>That’s where this platform comes in.</p>
+        <p>
+          Our goal is to remove the stress and complications from doing good.
+          Instead of donating through big systems or waiting for someone else to
+          take the lead, you can now:
+        </p>
+        <ul>
+          <li>Discover people near you who genuinely need help</li>
+          <li>
+            Learn their stories directly from community volunteers or even talk
+            directly to them to more understand about their circumstances
+          </li>
+          <li>Choose how, when, and what you want to give—on your own terms</li>
+        </ul>
+        <p>Just real people helping real people.</p>
+        <p>
+          It’s a faster, simpler, and more human way to give. No fuss. No
+          waiting. No pressure.
+        </p>
+
+        <h3>Mode 1: Share What You See (For Volunteers)</h3>
+        <p>If you meet someone struggling and want to help:</p>
+        <ul>
+          <li>
+            Record key details like name, location, what they’re doing, and how
+            they appear
+          </li>
+          <li>You can also upload a photo (optional)</li>
+          <li>
+            Use the notes box to write what you noticed about their situation
+            and needs
+          </li>
+          <li>
+            Tap Send to safely store this information for others to see and take
+            action
+          </li>
+        </ul>
+        <p>
+          Your observation might be the first step toward someone else receiving
+          help.
+        </p>
+
+        <h3>Mode 2: Find Someone to Help (For Donors)</h3>
+        <p>Want to offer help directly?</p>
+        <ul>
+          <li>
+            Fill in what you want to donate (like food, clothes, or money) and
+            where/when you can give
+          </li>
+          <li>
+            We’ll show you a map with locations of people shared by volunteers
+            (only if permission is granted)
+          </li>
+          <li>
+            Click on a pin to see their story, photo, and what they might need
+          </li>
+          <li>
+            You’ll also find a scrollable list of charity organizations in case
+            you want to go through official groups instead
+          </li>
+        </ul>
+        <p>This isn’t about handouts. It’s about human connection.</p>
+      </div>
     </div>
 
     <script
@@ -90,7 +771,6 @@
 
     <script>
       // --- PASTE YOUR FIREBASE CONFIGURATION HERE ---
-      // This is still needed to talk to your Firestore database
       const firebaseConfig = {
         apiKey: "REPLACE_WITH_YOUR_API_KEY",
         authDomain: "REPLACE_WITH_YOUR_AUTH_DOMAIN",
@@ -105,55 +785,124 @@
       const db = firebase.firestore();
 
       document.addEventListener("DOMContentLoaded", () => {
-        // --- All the element selectors are the same ---
+        // --- Element Selectors ---
         const navRecordBtn = document.getElementById("nav-record-mode");
-        // ... etc ...
+        const navMatchBtn = document.getElementById("nav-match-mode");
+        const navAboutBtn = document.getElementById("nav-about-btn");
+        const recordMode = document.getElementById("record-mode");
+        const matchMode = document.getElementById("match-mode");
+        const upForm = document.getElementById("up-form");
+        const upNameInput = document.getElementById("upName");
+        const upLocationInput = document.getElementById("upLocation");
+        const upTimeSeenInput = document.getElementById("upTimeSeen");
+        const upAppearanceInput = document.getElementById("upAppearance");
+        const upImageInput = document.getElementById("upImage");
+        const observerNotesInput = document.getElementById("observerNotes");
+        const donorForm = document.getElementById("donor-form");
+        const donationAreaInput = document.getElementById("donationArea");
+        const disclaimerOverlay = document.getElementById("disclaimer-overlay");
+        const disclaimerOkBtn = document.getElementById("disclaimer-ok-btn");
+        const aboutOverlay = document.getElementById("about-overlay");
+        const aboutCloseBtn = document.getElementById("about-close-btn");
         const enrichBtn = document.getElementById("enrich-btn");
 
-        // --- All the global variables are the same ---
+        // --- Global Variables ---
         let map;
         let markers = [];
         let allCloudRecords = [];
 
-        // --- All the main functions are the same EXCEPT callGeminiAPI ---
+        // --- Mode Switching & Modals ---
         function switchMode(mode) {
-          /* ... same as before ... */
+          if (mode === "record") {
+            recordMode.style.display = "flex";
+            matchMode.style.display = "none";
+            navRecordBtn.classList.add("active");
+            navMatchBtn.classList.remove("active");
+          } else {
+            recordMode.style.display = "none";
+            matchMode.style.display = "flex";
+            navRecordBtn.classList.remove("active");
+            navMatchBtn.classList.add("active");
+            if (!map) {
+              initMap();
+              listenForRealtimeUpdates();
+              setTimeout(() => map.invalidateSize(), 10);
+            }
+          }
         }
+        navRecordBtn.addEventListener("click", () => switchMode("record"));
+        navMatchBtn.addEventListener("click", () => {
+          disclaimerOverlay.style.display = "flex";
+          switchMode("match");
+        });
+        disclaimerOkBtn.addEventListener(
+          "click",
+          () => (disclaimerOverlay.style.display = "none")
+        );
+        navAboutBtn.addEventListener(
+          "click",
+          () => (aboutOverlay.style.display = "flex")
+        );
+        aboutCloseBtn.addEventListener(
+          "click",
+          () => (aboutOverlay.style.display = "none")
+        );
+        aboutOverlay.addEventListener("click", (event) => {
+          if (event.target === aboutOverlay)
+            aboutOverlay.style.display = "none";
+        });
+
+        // --- Helper Functions ---
         function normalizeText(text) {
-          /* ... same as before ... */
+          if (!text) return "";
+          return text
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .replace(/đ/g, "d");
         }
+
         function resizeImage(
           file,
           maxWidth = 800,
           maxHeight = 800,
           quality = 0.8
         ) {
-          /* ... same as before ... */
-        }
-        async function getAILocationTags(locationText, notesText) {
-          /* ... same as before ... */
-        }
-        enrichBtn.addEventListener("click", async () => {
-          /* ... same as before ... */
-        });
-        upForm.addEventListener("submit", async (e) => {
-          /* ... same as before ... */
-        });
-        function initMap() {
-          /* ... same as before ... */
-        }
-        function listenForRealtimeUpdates() {
-          /* ... same as before ... */
-        }
-        function filterAndDisplayMap() {
-          /* ... same as before ... */
-        }
-        function displayMarkersOnMap(records) {
-          /* ... same as before ... */
+          return new Promise((resolve, reject) => {
+            if (!file) return resolve(null);
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+              const img = new Image();
+              img.src = event.target.result;
+              img.onload = () => {
+                const canvas = document.createElement("canvas");
+                let width = img.width,
+                  height = img.height;
+                if (width > height) {
+                  if (width > maxWidth) {
+                    height *= maxWidth / width;
+                    width = maxWidth;
+                  }
+                } else {
+                  if (height > maxHeight) {
+                    width *= maxHeight / height;
+                    height = maxHeight;
+                  }
+                }
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL("image/jpeg", quality));
+              };
+              img.onerror = (error) => reject(error);
+            };
+            reader.onerror = (error) => reject(error);
+          });
         }
 
-        // --- THIS IS THE ONLY JAVASCRIPT FUNCTION THAT CHANGES ---
-        // --- This now calls our new, secure Netlify function ---
+        // --- AI Integration (Correct Netlify Version) ---
         async function callGeminiAPI(prompt) {
           try {
             // This special path automatically calls our Netlify function
@@ -183,9 +932,204 @@
           }
         }
 
-        // --- The carousel and initial switchMode call are the same ---
+        async function getAILocationTags(locationText, notesText) {
+          const prompt = `Analyze the Primary Location and the Observer Notes below. Extract all location-related keywords (street names, districts like 'Quận 1' or 'Q1', landmarks, specific places mentioned). Combine keywords from both sources. Return them as a single, comma-separated string.\n\nPrimary Location: "${locationText}"\nObserver Notes: "${
+            notesText || "No notes provided."
+          }"`;
+          try {
+            const tagsString = await callGeminiAPI(prompt);
+            return tagsString
+              .toLowerCase()
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter(Boolean);
+          } catch (error) {
+            console.warn(
+              "AI tagging failed. Falling back to basic location text."
+            );
+            return [locationText.toLowerCase().trim()];
+          }
+        }
+
+        enrichBtn.addEventListener("click", async () => {
+          const notes = observerNotesInput.value;
+          if (!notes.trim()) {
+            alert("Please enter some notes to enrich.");
+            return;
+          }
+          const prompt = `Based on these notes, create a concise, structured summary for a donor matching profile. Use this format:\n- **Situation:** [Brief summary]\n- **Observed Needs:** [List of needs]\n- **Suggested Support:** [Types of donations]\n\nNotes: "${notes}"`;
+          enrichBtn.disabled = true;
+          enrichBtn.textContent = "Enriching...";
+          try {
+            const enrichedText = await callGeminiAPI(prompt);
+            observerNotesInput.value = enrichedText;
+          } catch (error) {
+            alert("Failed to enrich notes. Please try again.");
+          } finally {
+            enrichBtn.disabled = false;
+            enrichBtn.textContent = "Enrich Notes with AI";
+          }
+        });
+
+        // --- Save Record to Firestore ---
+        upForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (!upForm.checkValidity()) {
+            upForm.reportValidity();
+            return;
+          }
+          const saveBtn = upForm.querySelector('button[type="submit"]');
+          saveBtn.disabled = true;
+          saveBtn.textContent = "Processing...";
+          try {
+            saveBtn.textContent = "Resizing Image...";
+            const resizedImageBase64 = await resizeImage(upImageInput.files[0]);
+
+            // NOTE: The "Processing AI..." step is now part of getAILocationTags
+            saveBtn.textContent = "Saving to Database...";
+
+            const locationText = upLocationInput.value;
+            const notesText = observerNotesInput.value;
+            const locationTags = await getAILocationTags(
+              locationText,
+              notesText
+            );
+            const baseLat = 10.7769,
+              baseLng = 106.7009;
+            const newRecord = {
+              name: upNameInput.value,
+              location: locationText,
+              timeSeen: upTimeSeenInput.value,
+              appearance: upAppearanceInput.value,
+              notes: notesText,
+              imageBase64: resizedImageBase64,
+              lat: baseLat + (Math.random() - 0.5) * 0.05,
+              lng: baseLng + (Math.random() - 0.5) * 0.05,
+              locationTags: locationTags,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            };
+            await db.collection("upRecords").add(newRecord);
+            alert("Record saved to cloud successfully!");
+            upForm.reset();
+          } catch (error) {
+            console.error("Failed to save record to Firestore:", error);
+            alert("An error occurred while saving. Please check the console.");
+          } finally {
+            saveBtn.disabled = false;
+            saveBtn.textContent = "Save Record";
+          }
+        });
+
+        // --- Map & Match Mode Logic ---
+        function initMap() {
+          map = L.map("map").setView([10.7769, 106.7009], 13);
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution:
+              '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }).addTo(map);
+        }
+
+        function listenForRealtimeUpdates() {
+          db.collection("upRecords")
+            .orderBy("timestamp", "desc")
+            .onSnapshot(
+              (querySnapshot) => {
+                allCloudRecords = [];
+                querySnapshot.forEach((doc) => {
+                  allCloudRecords.push({ id: doc.id, ...doc.data() });
+                });
+                console.log("Live data updated:", allCloudRecords);
+                filterAndDisplayMap();
+              },
+              (error) => {
+                console.error("Error listening for real-time updates: ", error);
+              }
+            );
+        }
+
+        function filterAndDisplayMap() {
+          const normalizedSearchTerm = normalizeText(
+            donationAreaInput.value.trim()
+          );
+          const filteredRecords = allCloudRecords.filter((record) => {
+            if (!normalizedSearchTerm) return true;
+            return (
+              record.locationTags &&
+              record.locationTags.some((tag) =>
+                normalizeText(tag).includes(normalizedSearchTerm)
+              )
+            );
+          });
+          displayMarkersOnMap(filteredRecords);
+        }
+
+        donorForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          filterAndDisplayMap();
+        });
+
+        function displayMarkersOnMap(records) {
+          markers.forEach((marker) => map.removeLayer(marker));
+          markers = [];
+          if (records.length === 0 && allCloudRecords.length > 0) {
+            alert("No records found matching your filter criteria.");
+          }
+          records.forEach((record) => {
+            const popupContent = `<div style="max-width: 250px; font-size: 0.9rem;">${
+              record.imageBase64
+                ? `<img src="${record.imageBase64}" alt="${record.name}" style="width:100%; height:auto; border-radius: 4px; margin-bottom: 10px;">`
+                : ""
+            }<h3 style="margin: 0 0 5px 0;">${
+              record.name
+            }</h3><p><strong>Location:</strong> ${
+              record.location
+            }</p><p><strong>Time Seen:</strong> ${
+              record.timeSeen || "N/A"
+            }</p><p><strong>Details:</strong> ${
+              record.appearance
+            }</p><hr style="margin: 8px 0;"><p style="margin: 5px 0 0 0; font-style: italic;">${record.notes.replace(
+              /\n/g,
+              "<br>"
+            )}</p></div>`;
+            const marker = L.marker([record.lat, record.lng])
+              .addTo(map)
+              .bindPopup(popupContent);
+            markers.push(marker);
+          });
+          if (markers.length > 0) {
+            const group = new L.featureGroup(markers);
+            map.fitBounds(group.getBounds().pad(0.2));
+          }
+        }
+
+        // --- Carousel Drag Logic ---
         const carousel = document.querySelector(".carousel");
-        // ... carousel event listeners ...
+        let isDown = false,
+          startX,
+          scrollLeft;
+        carousel.addEventListener("mousedown", (e) => {
+          isDown = true;
+          carousel.style.cursor = "grabbing";
+          startX = e.pageX - carousel.offsetLeft;
+          scrollLeft = carousel.scrollLeft;
+        });
+        carousel.addEventListener("mouseleave", () => {
+          isDown = false;
+          carousel.style.cursor = "grab";
+        });
+        carousel.addEventListener("mouseup", () => {
+          isDown = false;
+          carousel.style.cursor = "grab";
+        });
+        carousel.addEventListener("mousemove", (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - carousel.offsetLeft;
+          const walk = (x - startX) * 2;
+          carousel.scrollLeft = scrollLeft - walk;
+        });
+
+        // --- Initial State ---
         switchMode("record");
       });
     </script>

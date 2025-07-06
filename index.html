@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sharing for Sharing</title>
+
+    <!-- Leaflet.js CSS for Interactive Map -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+
+    <style>
+      /* --- RMIT Vietnam Theme & Global Styles --- */
+      :root {
+        --rmit-red: #e50004;
+        --rmit-black: #000000;
+        --rmit-white: #ffffff;
+        --light-grey: #f7f7f7;
+        --medium-grey: #cccccc;
+        --dark-grey: #333333;
+        --border-radius: 8px;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        margin: 0;
+        background-color: var(--light-grey);
+        color: var(--dark-grey);
+        -webkit-font-smoothing: antialiased;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* All your other CSS goes here... it is unchanged */
+      header,
+      .container,
+      .btn,
+      .carousel,
+      .modal-close-btn,
+      etc... {
+        /* ... all the styles are the same ... */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ALL YOUR HTML BODY CONTENT GOES HERE -->
+    <!-- It is unchanged from before -->
+    <header>
+      <h1><a href="index.html">Sharing for Sharing</a></h1>
+      <nav>
+        <button id="nav-record-mode" class="active">Record Mode</button>
+        <button id="nav-match-mode">Match & Map Mode</button>
+        <button id="nav-about-btn">About</button>
+      </nav>
+    </header>
+
+    <main id="record-mode">
+      <!-- The form HTML is unchanged -->
+    </main>
+
+    <main id="match-mode">
+      <!-- The map and carousel HTML is unchanged -->
+    </main>
+
+    <div id="disclaimer-overlay">
+      <!-- The disclaimer modal is unchanged -->
+    </div>
+
+    <div id="about-overlay">
+      <!-- The about modal is unchanged -->
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+      // --- PASTE YOUR FIREBASE CONFIGURATION HERE ---
+      // This is still needed to talk to your Firestore database
+      const firebaseConfig = {
+        apiKey: "REPLACE_WITH_YOUR_API_KEY",
+        authDomain: "REPLACE_WITH_YOUR_AUTH_DOMAIN",
+        projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
+        storageBucket: "REPLACE_WITH_YOUR_STORAGE_BUCKET",
+        messagingSenderId: "REPLACE_WITH_YOUR_MESSAGING_SENDER_ID",
+        appId: "REPLACE_WITH_YOUR_APP_ID",
+      };
+
+      // --- Initialize Firebase and Firestore ---
+      const app = firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // --- All the element selectors are the same ---
+        const navRecordBtn = document.getElementById("nav-record-mode");
+        // ... etc ...
+        const enrichBtn = document.getElementById("enrich-btn");
+
+        // --- All the global variables are the same ---
+        let map;
+        let markers = [];
+        let allCloudRecords = [];
+
+        // --- All the main functions are the same EXCEPT callGeminiAPI ---
+        function switchMode(mode) {
+          /* ... same as before ... */
+        }
+        function normalizeText(text) {
+          /* ... same as before ... */
+        }
+        function resizeImage(
+          file,
+          maxWidth = 800,
+          maxHeight = 800,
+          quality = 0.8
+        ) {
+          /* ... same as before ... */
+        }
+        async function getAILocationTags(locationText, notesText) {
+          /* ... same as before ... */
+        }
+        enrichBtn.addEventListener("click", async () => {
+          /* ... same as before ... */
+        });
+        upForm.addEventListener("submit", async (e) => {
+          /* ... same as before ... */
+        });
+        function initMap() {
+          /* ... same as before ... */
+        }
+        function listenForRealtimeUpdates() {
+          /* ... same as before ... */
+        }
+        function filterAndDisplayMap() {
+          /* ... same as before ... */
+        }
+        function displayMarkersOnMap(records) {
+          /* ... same as before ... */
+        }
+
+        // --- THIS IS THE ONLY JAVASCRIPT FUNCTION THAT CHANGES ---
+        // --- This now calls our new, secure Netlify function ---
+        async function callGeminiAPI(prompt) {
+          try {
+            // This special path automatically calls our Netlify function
+            const response = await fetch("/.netlify/functions/callGemini", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ prompt: prompt }),
+            });
+
+            if (!response.ok) {
+              throw new Error(`Netlify Function Error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            if (!data.candidates || data.candidates.length === 0) {
+              throw new Error("Invalid response from AI: No candidates found.");
+            }
+            return data.candidates[0].content.parts[0].text.trim();
+          } catch (error) {
+            console.error("Failed to call Gemini via Netlify:", error);
+            alert(
+              "Could not connect to the AI service. Please check the console."
+            );
+            throw error;
+          }
+        }
+
+        // --- The carousel and initial switchMode call are the same ---
+        const carousel = document.querySelector(".carousel");
+        // ... carousel event listeners ...
+        switchMode("record");
+      });
+    </script>
+  </body>
+</html>
